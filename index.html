@@ -43,6 +43,14 @@
 
     @media (max-width:520px){.thumb{height:120px}}
   </style>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("8Jr4iEFeHuqehfCyA"); // Public Key già inserita
+    })();
+  </script>
 </head>
 <body>
   <div class="wrap">
@@ -128,148 +136,4 @@
         ],
         onlyEmail:true
       },
-      {id:3, title:'Soldi Falsi', desc:'Consegna 3/5 Giorni', sku:'A3',
-        options:[
-          {label:'200€ = 600€', price:'200.00'},
-          {label:'300€ = 1200€', price:'300.00'},
-          {label:'500€ = 2000€', price:'500.00'},
-          {label:'700€ = 3000€', price:'700.00'},
-          {label:'1000€ = 5500€', price:'1000.00'}
-        ],
-        onlyEmail:false
-      },
-      {id:4, title:'Guida Soldi Facili - 15GB', desc:'Consegna ISTANTANEA', sku:'A4',
-        options:[],
-        onlyEmail:true,
-        fixedPrice:'20.00'
-      }
-    ];
-
-    const productsRoot = document.getElementById('products');
-    const modal = document.getElementById('checkoutModal');
-    const optionContainer = document.getElementById('optionContainer');
-    const productOption = document.getElementById('productOption');
-    const shippingFields = document.getElementById('shippingFields');
-    const ppItemName = document.getElementById('pp_item_name');
-    const ppAmount = document.getElementById('pp_amount');
-    const ppCustom = document.getElementById('pp_custom');
-    const buyerName = document.getElementById('buyerName');
-    const addr = document.getElementById('addr');
-    const city = document.getElementById('city');
-    const zip = document.getElementById('zip');
-    const country = document.getElementById('country');
-
-    PRODUCTS.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'card';
-      let priceText = p.fixedPrice ? `€ ${p.fixedPrice}` : 'Prezzo da selezionare';
-      
-      let imgSrc = '';
-      if(p.id === 2){
-        imgSrc = 'paypal.png';
-      } else if(p.id === 3){
-        imgSrc = 'banconote.png';
-      } else if(p.id === 4){
-        imgSrc = 'cartelle.png';
-      } else if(p.id === 1){
-        imgSrc = 'cartebianche.png';
-      }
-
-      div.innerHTML = `
-        <div class="thumb">
-          ${imgSrc ? `<img src="${imgSrc}" alt="${p.title}">` : 'Immagine / Placeholder'}
-        </div>
-        <div class="title">${p.title}</div>
-        <div class="desc">${p.desc}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div class="price">${priceText}</div>
-          <button data-id="${p.id}">Acquista</button>
-        </div>`;
-      productsRoot.appendChild(div);
-    });
-
-    document.querySelectorAll('button[data-id]').forEach(btn => btn.addEventListener('click', e => {
-      const id = +e.currentTarget.getAttribute('data-id');
-      openCheckout(id);
-    }));
-
-    function openCheckout(id) {
-      const product = PRODUCTS.find(p => p.id === id);
-      ppItemName.value = product.title + (product.sku ? ` (${product.sku})` : '');
-      productOption.innerHTML = '';
-      ppCustom.value = '';
-
-      if (product.options.length > 0) {
-        optionContainer.style.display = 'flex';
-        productOption.required = true;
-        product.options.forEach(opt => {
-          const optionEl = document.createElement('option');
-          optionEl.value = opt.price;
-          optionEl.textContent = opt.label;
-          productOption.appendChild(optionEl);
-        });
-        productOption.value = '';
-        ppAmount.value = '';
-        productOption.onchange = () => {
-          ppAmount.value = productOption.value;
-          ppCustom.value = `${productOption.options[productOption.selectedIndex].textContent}`;
-        }
-      } else {
-        optionContainer.style.display = 'none';
-        productOption.required = false;
-        ppAmount.value = product.fixedPrice || '0.00';
-        ppCustom.value = '';
-      }
-
-      if (product.onlyEmail) {
-        buyerName.required = false;
-        addr.required = false;
-        city.required = false;
-        zip.required = false;
-        country.required = false;
-        buyerName.parentElement.style.display = 'none';
-        addr.parentElement.style.display = 'none';
-        city.parentElement.style.display = 'none';
-        zip.parentElement.style.display = 'none';
-        country.parentElement.style.display = 'none';
-      } else {
-        buyerName.required = true;
-        addr.required = true;
-        city.required = true;
-        zip.required = true;
-        country.required = true;
-        buyerName.parentElement.style.display = 'flex';
-        addr.parentElement.style.display = 'flex';
-        city.parentElement.style.display = 'flex';
-        zip.parentElement.style.display = 'flex';
-        country.parentElement.style.display = 'flex';
-      }
-
-      document.getElementById('modalTitle').innerText = `Acquisto: ${product.title}`;
-      modal.classList.add('show');
-      modal.setAttribute('aria-hidden', 'false');
-    }
-
-    document.getElementById('checkoutForm').addEventListener('submit', e => {
-      if(optionContainer.style.display === 'none'){
-        const productName = ppItemName.value.split(' (')[0];
-        const prod = PRODUCTS.find(p => p.title === productName);
-        ppAmount.value = prod.fixedPrice || '0.00';
-      } else {
-        if(!productOption.value){
-          e.preventDefault();
-          alert('Seleziona un\'opzione per procedere.');
-          return false;
-        }
-        ppAmount.value = productOption.value;
-        ppCustom.value = productOption.options[productOption.selectedIndex].textContent;
-      }
-    });
-
-    document.getElementById('closeModal').addEventListener('click', () => {
-      modal.classList.remove('show');
-      modal.setAttribute('aria-hidden', 'true');
-    });
-  </script>
-</body>
-</html>
+      {id:3, title:'Soldi Fals
