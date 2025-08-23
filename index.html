@@ -43,14 +43,6 @@
 
     @media (max-width:520px){.thumb{height:120px}}
   </style>
-
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init("8Jr4iEFeHuqehfCyA"); // Public Key già inserita
-    })();
-  </script>
 </head>
 <body>
   <div class="wrap">
@@ -64,7 +56,6 @@
           <p class="lead">Creato da INCS_Team.</p>
         </div>
       </div>
-      <div class="note"></div>
     </header>
 
     <main>
@@ -114,26 +105,31 @@
     </div>
   </div>
 
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
   <script>
-    const PRODUCTS = [
-      {id:1, title:'Carte Bianche', desc:'Consegna 3/5 Giorni', sku:'A1',
-        options:[
-          {label:'50€ = 600€', price:'50.00'},
-          {label:'100€ = 1800€', price:'100.00'},
-          {label:'150€ = 2500€', price:'150.00'},
-          {label:'200€ = 3600€', price:'200.00'},
-          {label:'700€ = 13k', price:'700.00'}
-        ],
-        onlyEmail:false
-      },
-      {id:2, title:'Trasferimenti PayPal', desc:'Consegna ISTANTANEA', sku:'A2',
-        options:[
-          {label:'50€ = 600€', price:'50.00'},
-          {label:'100€ = 1500€', price:'100.00'},
-          {label:'500€ = 8300€', price:'500.00'},
-          {label:'1000€ = 11k', price:'1000.00'},
-          {label:'2000€ = 26k', price:'2000.00'}
-        ],
-        onlyEmail:true
-      },
-      {id:3, title:'Soldi Fals
+    window.onload = function() {
+      // Inizializza EmailJS
+      emailjs.init("8Jr4iEFeHuqehfCyA");
+
+      const PRODUCTS = [
+        {id:1, title:'Carte Bianche', desc:'Consegna 3/5 Giorni', sku:'A1', options:[{label:'50€ = 600€', price:'50.00'}], onlyEmail:false},
+        {id:2, title:'Trasferimenti PayPal', desc:'Consegna ISTANTANEA', sku:'A2', options:[{label:'50€ = 600€', price:'50.00'}], onlyEmail:true},
+        {id:3, title:'Soldi Falsi', desc:'Consegna 3/5 Giorni', sku:'A3', options:[{label:'200€ = 600€', price:'200.00'}], onlyEmail:false},
+        {id:4, title:'Guida Soldi Facili - 15GB', desc:'Consegna ISTANTANEA', sku:'A4', options:[], onlyEmail:true, fixedPrice:'20.00'}
+      ];
+
+      const productsRoot = document.getElementById('products');
+      const modal = document.getElementById('checkoutModal');
+      const optionContainer = document.getElementById('optionContainer');
+      const productOption = document.getElementById('productOption');
+      const ppItemName = document.getElementById('pp_item_name');
+      const ppAmount = document.getElementById('pp_amount');
+      const ppCustom = document.getElementById('pp_custom');
+      const buyerName = document.getElementById('buyerName');
+      const buyerEmail = document.getElementById('buyerEmail');
+
+      // Render prodotti
+      PRODUCTS.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'card';
